@@ -1,6 +1,11 @@
 <template>
   <div class="home">
     <h2>New Recipe</h2>
+    Title: <input type="text" v-model="newRecipeTitle" /><br />
+    Directions: <input type="text" v-model="newRecipeDirections" /><br />
+    Ingredients: <input type="text" v-model="newRecipeIngredients" /><br />
+    Prep Time: <input type="text" v-model="newRecipePrepTime" /><br />
+    Image Url: <input type="text" v-model="newRecipeImageUrl" /><br />
     <button v-on:click="createRecipe()">Add Recipe</button>
 
     <div v-for="recipe in recipes" :key="recipe.id">
@@ -24,7 +29,12 @@ import axios from "axios";
 export default {
   data: function () {
     return {
-      recipes: []
+      recipes: [],
+      newRecipeTitle: "",
+      newRecipeDirections: "",
+      newRecipeIngredients: "",
+      newRecipePrepTime: "",
+      newRecipeImageUrl: ""
     };
   },
   created: function () {
@@ -39,11 +49,11 @@ export default {
     },
     createRecipe: function () {
       var params = {
-        directions: "Make filling, make crust, put filling in crust, bake",
-        ingredients: "Strawberries, rhubarb, pie crust",
-        prep_time: 45,
-        image_url:
-          "https://www.simplyrecipes.com/thmb/e2zSk7O0gwgAyjujpoGx7DbTKC8=/450x0/filters:no_upscale():max_bytes(150000):strip_icc()/__opt__aboutcom__coeus__resources__content_migration__simply_recipes__uploads__2014__06__strawberry-rhubarb-pie-vertical-a-1600-b5f28ee80738408e8d34ad629a0b431c.jpg"
+        title: this.newRecipeTitle,
+        directions: this.newRecipeDirections,
+        ingredients: this.newRecipeIngredients,
+        prep_time: this.newRecipePrepTime,
+        image_url: this.newRecipeImageUrl
       };
       axios
         .post("http://localhost:3000/recipes", params)
