@@ -10,11 +10,23 @@
 
     <div v-for="recipe in recipes" :key="recipe.id">
       <h3>Title: {{ recipe.title }}</h3>
-      <img :src="recipe.image_url" alt="" />
+      <img :src="recipe.image_url" alt="" /><br />
+      <button v-on:click="showRecipe(recipe)">More Info</button>
       <p>Ingredients: {{ recipe.ingredients }}</p>
       <p>Directions: {{ recipe.directions }}</p>
       <p>Prep Time: {{ recipe.friendly_prep_time }}</p>
     </div>
+    <dialog id="recipe-details">
+      <form method="dialog">
+        <h1>Recipe Info</h1>
+        <img src="" alt="" />
+        <p>Title: ...</p>
+        <p>Ingredients: ...</p>
+        <p>Directions: ...</p>
+        <p>Prep Time: ...</p>
+        <button>Close</button>
+      </form>
+    </dialog>
   </div>
 </template>
 
@@ -64,6 +76,10 @@ export default {
         .catch((error) => {
           console.log(error.response.data.errors);
         });
+    },
+    showRecipe: function (recipe) {
+      console.log(recipe);
+      document.querySelector("#recipe-details").showModal();
     }
   }
 };
