@@ -2,11 +2,13 @@
   <div class="home">
     <div>
       <h2>New Recipe</h2>
-      Title: <input type="text" v-model="newRecipeTitle" /><br />
-      Directions: <input type="text" v-model="newRecipeDirections" /><br />
-      Ingredients: <input type="text" v-model="newRecipeIngredients" /><br />
-      Prep Time: <input type="text" v-model="newRecipePrepTime" /><br />
-      Image Url: <input type="text" v-model="newRecipeImageUrl" /><br />
+      Title: <input type="text" v-model="newRecipeParams.title" /><br />
+      Directions:
+      <input type="text" v-model="newRecipeParams.directions" /><br />
+      Ingredients:
+      <input type="text" v-model="newRecipeParams.ingredients" /><br />
+      Prep Time: <input type="text" v-model="newRecipeParams.prep_time" /><br />
+      Image Url: <input type="text" v-model="newRecipeParams.image_url" /><br />
       <button v-on:click="createRecipe()">Add Recipe</button>
     </div>
     <div v-for="recipe in recipes" :key="recipe.id">
@@ -54,11 +56,7 @@ export default {
   data: function () {
     return {
       recipes: [],
-      newRecipeTitle: "",
-      newRecipeDirections: "",
-      newRecipeIngredients: "",
-      newRecipePrepTime: "",
-      newRecipeImageUrl: "",
+      newRecipeParams: {},
       currentRecipe: {}
     };
   },
@@ -73,15 +71,8 @@ export default {
       });
     },
     createRecipe: function () {
-      var params = {
-        title: this.newRecipeTitle,
-        directions: this.newRecipeDirections,
-        ingredients: this.newRecipeIngredients,
-        prep_time: this.newRecipePrepTime,
-        image_url: this.newRecipeImageUrl
-      };
       axios
-        .post("http://localhost:3000/recipes", params)
+        .post("http://localhost:3000/recipes", this.newRecipeParams)
         .then((response) => {
           console.log("Success!", response.data);
           this.recipes.push(response.data);
