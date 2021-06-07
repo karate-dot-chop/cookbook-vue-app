@@ -2,6 +2,9 @@
   <div class="home">
     <div>
       <h2>New Recipe</h2>
+      <ul>
+        <li v-for="error in errors" v-bind:key="error">{{ error }}</li>
+      </ul>
       Title: <input type="text" v-model="newRecipeParams.title" /><br />
       Directions:
       <input type="text" v-model="newRecipeParams.directions" /><br />
@@ -57,7 +60,8 @@ export default {
     return {
       recipes: [],
       newRecipeParams: {},
-      currentRecipe: {}
+      currentRecipe: {},
+      errors: []
     };
   },
   created: function () {
@@ -79,6 +83,7 @@ export default {
         })
         .catch((error) => {
           console.log(error.response.data.errors);
+          this.errors = error.response.data.errors;
         });
     },
     showRecipe: function (recipe) {
