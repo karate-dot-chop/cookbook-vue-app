@@ -1,13 +1,14 @@
 <template>
   <div class="home">
-    <h2>New Recipe</h2>
-    Title: <input type="text" v-model="newRecipeTitle" /><br />
-    Directions: <input type="text" v-model="newRecipeDirections" /><br />
-    Ingredients: <input type="text" v-model="newRecipeIngredients" /><br />
-    Prep Time: <input type="text" v-model="newRecipePrepTime" /><br />
-    Image Url: <input type="text" v-model="newRecipeImageUrl" /><br />
-    <button v-on:click="createRecipe()">Add Recipe</button>
-
+    <div>
+      <h2>New Recipe</h2>
+      Title: <input type="text" v-model="newRecipeTitle" /><br />
+      Directions: <input type="text" v-model="newRecipeDirections" /><br />
+      Ingredients: <input type="text" v-model="newRecipeIngredients" /><br />
+      Prep Time: <input type="text" v-model="newRecipePrepTime" /><br />
+      Image Url: <input type="text" v-model="newRecipeImageUrl" /><br />
+      <button v-on:click="createRecipe()">Add Recipe</button>
+    </div>
     <div v-for="recipe in recipes" :key="recipe.id">
       <h3>Title: {{ recipe.title }}</h3>
       <img :src="recipe.image_url" alt="" /><br />
@@ -19,11 +20,21 @@
     <dialog id="recipe-details">
       <form method="dialog">
         <h1>Recipe Info</h1>
-        <img src="" alt="" />
-        <p>Title: ...</p>
-        <p>Ingredients: ...</p>
-        <p>Directions: ...</p>
-        <p>Prep Time: ...</p>
+        <img :src="currentRecipe.image_url" alt="" />
+        <p>Title: <input type="text" v-model="currentRecipe.title" /></p>
+        <p>
+          Image Url: <input type="text" v-model="currentRecipe.image_url" />
+        </p>
+        <p>
+          Ingredients: <input type="text" v-model="currentRecipe.ingredients" />
+        </p>
+        <p>
+          Directions: <input type="text" v-model="currentRecipe.directions" />
+        </p>
+        <p>
+          Prep Time: <input type="text" v-model="currentRecipe.prep_time" />
+        </p>
+        <button v-on:click="updateRecipe()">Update</button>
         <button>Close</button>
       </form>
     </dialog>
@@ -46,7 +57,8 @@ export default {
       newRecipeDirections: "",
       newRecipeIngredients: "",
       newRecipePrepTime: "",
-      newRecipeImageUrl: ""
+      newRecipeImageUrl: "",
+      currentRecipe: {}
     };
   },
   created: function () {
@@ -79,7 +91,29 @@ export default {
     },
     showRecipe: function (recipe) {
       console.log(recipe);
+      this.currentRecipe = recipe;
       document.querySelector("#recipe-details").showModal();
+    },
+    updateRecipe: function () {
+      console.log(this.currentRecipe);
+      var updateRecipeParams = {
+        title: this.currentRecipe.title,
+        directions: this.currentRecipe.directions,
+        ingredients: this.currentRecipe.ingredients,
+        prep_time: this.currentRecipe.prep_time,
+        image_url: this.currentRecipe.image_url
+      };
+      axios
+        .patch(
+          `http://localhost:3000/recipes/${this.currentRecipe.id}`,
+          updateRecipeParams
+        )
+        .then((response) => {
+          console.log("Success!", response.data);
+        })
+        .catch((error) => {
+          console.log(error.response.data.errors);
+        });
     }
   }
 };
