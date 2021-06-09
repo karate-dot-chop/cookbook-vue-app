@@ -37,6 +37,7 @@
       </div>
       <input type="submit" class="btn btn-primary" value="Submit" />
     </form>
+    newUserParams: {{ newUserParams }}
   </div>
 </template>
 
@@ -53,7 +54,7 @@ export default {
   methods: {
     submit: function () {
       axios
-        .post("http://localhost:3000/users", this.newUserParams)
+        .post("/users", this.newUserParams)
         .then((response) => {
           console.log(response.data);
           this.$router.push("/login");
