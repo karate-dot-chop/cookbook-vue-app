@@ -5,7 +5,7 @@
     <p>{{ recipe.ingredients }}</p>
     <p>{{ recipe.directions }}</p>
     <p>Added by: {{ recipe.user.name }} on {{ recipe.friendly_created_at }}</p>
-    <router-link to="/recipes">All Recipes</router-link>
+    <router-link :to="`/recipes/${recipe.id}/edit`">Edit</router-link>
   </div>
 </template>
 
