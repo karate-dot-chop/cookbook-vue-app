@@ -1,7 +1,11 @@
 <template>
   <div class="recipes-show">
-    <h2>This is a Recipes Show Page</h2>
-    <p>{{ recipe }}</p>
+    <h2>{{ recipe.title }}</h2>
+    <img :src="recipe.image_url" alt="" />
+    <p>{{ recipe.ingredients }}</p>
+    <p>{{ recipe.directions }}</p>
+    <p>Added by: {{ recipe.user.name }} on {{ recipe.friendly_created_at }}</p>
+    <router-link to="/recipes">All Recipes</router-link>
   </div>
 </template>
 
@@ -10,7 +14,7 @@ import axios from "axios";
 export default {
   data: function () {
     return {
-      recipe: {}
+      recipe: { user: {} }
     };
   },
   created: function () {
