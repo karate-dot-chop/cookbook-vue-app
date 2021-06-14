@@ -7,6 +7,7 @@
           {{ error }}
         </li>
       </ul>
+      <img v-if="status" :src="`https://http.cat/${status}`" alt="" />
       <div class="form-group">
         <label>Title:</label>
         <input
@@ -60,7 +61,8 @@ export default {
   data: function () {
     return {
       newRecipeParams: {},
-      errors: []
+      errors: [],
+      status: ""
     };
   },
   methods: {
@@ -73,6 +75,7 @@ export default {
         })
         .catch((error) => {
           this.errors = error.response.data.errors;
+          this.status = error.response.status;
         });
     }
   }
