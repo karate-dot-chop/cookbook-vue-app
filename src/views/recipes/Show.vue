@@ -4,9 +4,21 @@
     <img :src="recipe.image_url" alt="" />
     <p>{{ recipe.ingredients }}</p>
     <p>{{ recipe.directions }}</p>
-    <p>Added by: {{ recipe.user.name }} on {{ recipe.friendly_created_at }}</p>
-    <router-link :to="`/recipes/${recipe.id}/edit`">Edit</router-link> |
-    <button v-on:click="destroyRecipe()">Delete</button>
+    <p>
+      Added by: {{ recipe.user.name }} on
+      {{ recipe.friendly_created_at }}
+    </p>
+    <p>
+      Current logged in user: {{ typeof $parent.getUserId() }}
+      {{ $parent.getUserId() }}
+    </p>
+    <p>
+      User who made recipe: {{ typeof recipe.user.id }} {{ recipe.user.id }}
+    </p>
+    <span v-if="$parent.getUserId() == recipe.user.id">
+      <router-link :to="`/recipes/${recipe.id}/edit`">Edit</router-link> |
+      <button v-on:click="destroyRecipe()">Delete</button>
+    </span>
   </div>
 </template>
 

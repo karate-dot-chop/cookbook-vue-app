@@ -12,6 +12,9 @@
         <router-link to="/login">Login</router-link>
       </span>
     </div>
+    <div v-if="flashMessage">
+      {{ flashMessage }} <button v-on:click="flashMessage = ''">Dismiss</button>
+    </div>
     <!-- Renders current .vue template -->
     <router-view />
   </div>
@@ -43,11 +46,16 @@
 <script>
 export default {
   data: function () {
-    return {};
+    return {
+      flashMessage: ""
+    };
   },
   methods: {
     isLoggedIn: function () {
       return localStorage.getItem("jwt");
+    },
+    getUserId: function () {
+      return localStorage.getItem("user_id");
     }
   }
 };
