@@ -1,6 +1,10 @@
 <template>
   <div class="recipes-index">
-    <div v-for="recipe in recipes" v-bind:key="recipe.id">
+    <input type="text" v-model="searchTerm" placeholder="Search" />
+    <div
+      v-for="recipe in filterBy(recipes, searchTerm, 'title')"
+      v-bind:key="recipe.id"
+    >
       <h2>{{ recipe.title }}</h2>
       <router-link :to="`/recipes/${recipe.id}`">
         <img :src="recipe.image_url" alt=""
@@ -16,11 +20,14 @@
 <script>
 import axios from "axios";
 import moment from "moment";
+import Vue2Filters from "vue2-filters";
 
 export default {
+  mixins: [Vue2Filters.mixin],
   data: function () {
     return {
-      recipes: []
+      recipes: [],
+      searchTerm: ""
     };
   },
   created: function () {
