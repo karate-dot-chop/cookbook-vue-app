@@ -9,8 +9,14 @@
       </ul>
       <div class="form-group">
         <label>Name:</label>
-        <input type="text" class="form-control" v-model="newUserParams.name" />
+        <input
+          type="text"
+          class="form-control"
+          v-model="newUserParams.name"
+        /><br />
+        <small>{{ 25 - newUserParams.name.length }} characters remaining</small>
       </div>
+      <br />
       <div class="form-group">
         <label>Email:</label>
         <input
@@ -19,6 +25,7 @@
           v-model="newUserParams.email"
         />
       </div>
+      <br />
       <div class="form-group">
         <label>Password:</label>
         <input
@@ -26,7 +33,20 @@
           class="form-control"
           v-model="newUserParams.password"
         />
+        <br />
+        <small
+          v-if="
+            newUserParams.password.length > 0 &&
+            newUserParams.password.length < 6
+          "
+          class="text-danger"
+          >Must be at least 6 characters</small
+        >
+        <small v-if="newUserParams.password.length > 20" class="text-danger"
+          >Password cannot exceed 20 characters</small
+        >
       </div>
+      <br />
       <div class="form-group">
         <label>Password confirmation:</label>
         <input
@@ -34,12 +54,38 @@
           class="form-control"
           v-model="newUserParams.password_confirmation"
         />
+        <br />
+        <small
+          v-if="newUserParams.password !== newUserParams.password_confirmation"
+          class="text-danger"
+          >Must match password</small
+        >
       </div>
-      <input type="submit" class="btn btn-primary" value="Submit" />
+      <br />
+      <input
+        v-if="
+          newUserParams.name.length < 2 ||
+          newUserParams.name.length > 25 ||
+          newUserParams.password.length < 6 ||
+          newUserParams.password.length > 20 ||
+          newUserParams.password !== newUserParams.password_confirmation
+        "
+        type="submit"
+        disabled
+        class="btn btn-primary"
+        value="Submit"
+      />
+      <input v-else type="submit" class="btn btn-primary" value="Submit" />
     </form>
-    newUserParams: {{ newUserParams }}
+    <!-- newUserParams: {{ newUserParams }} -->
   </div>
 </template>
+
+<style scoped>
+.text-danger {
+  color: red;
+}
+</style>
 
 <script>
 import axios from "axios";
@@ -47,7 +93,11 @@ import axios from "axios";
 export default {
   data: function () {
     return {
-      newUserParams: {},
+      newUserParams: {
+        name: "",
+        password: "",
+        password_confirmation: ""
+      },
       errors: []
     };
   },
