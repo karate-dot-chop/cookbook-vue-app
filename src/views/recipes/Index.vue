@@ -12,23 +12,39 @@
       placeholder="Search"
     />
     <br /><br />
-    <button v-on:click="setSortAttribute('title')">Sort by title</button>
+    <button v-on:click="setSortAttribute('title')">
+      Sort by title
+      <span v-if="sortAttribute === 'title' && sortOrder === 1">^</span>
+      <span v-if="sortAttribute === 'title' && sortOrder === -1">v</span>
+    </button>
     <button v-on:click="setSortAttribute('prep_time')">
       Sort by prep time
+      <span v-if="sortAttribute === 'prep_time' && sortOrder === 1">^</span>
+      <span v-if="sortAttribute === 'prep_time' && sortOrder === -1">v</span>
     </button>
 
     <div
-      v-for="recipe in filterBy(orderBy(recipes, sortAttribute), searchTerm)"
-      v-bind:key="recipe.id"
+      is="transition-group"
+      appear
+      enter-active-class="animate__animated animate__bounceIn"
+      leave-active-class="animate__animated animate__bounceOut"
     >
-      <h2>{{ recipe.title }}</h2>
-      <router-link :to="`/recipes/${recipe.id}`">
-        <img :src="recipe.image_url" alt=""
-      /></router-link>
-      <p>Ingredients: {{ recipe.ingredients }}</p>
-      <p>Directions: {{ recipe.directions }}</p>
-      <p>Prep Time: {{ recipe.prep_time }}</p>
-      <p>Created {{ relativeDate(recipe.created_at) }}</p>
+      <div
+        v-for="recipe in filterBy(
+          orderBy(recipes, sortAttribute, sortOrder),
+          searchTerm
+        )"
+        v-bind:key="recipe.id"
+      >
+        <h2>{{ recipe.title }}</h2>
+        <router-link :to="`/recipes/${recipe.id}`">
+          <img :src="recipe.image_url" alt=""
+        /></router-link>
+        <p>Ingredients: {{ recipe.ingredients }}</p>
+        <p>Directions: {{ recipe.directions }}</p>
+        <p>Prep Time: {{ recipe.prep_time }}</p>
+        <p>Created {{ relativeDate(recipe.created_at) }}</p>
+      </div>
     </div>
   </div>
 </template>
@@ -44,7 +60,8 @@ export default {
     return {
       recipes: [],
       searchTerm: "",
-      sortAttribute: "title"
+      sortAttribute: "title",
+      sortOrder: 1
     };
   },
   created: function () {
@@ -58,7 +75,12 @@ export default {
       return moment(date).fromNow();
     },
     setSortAttribute: function (attribute) {
-      this.sortAttribute = attribute;
+      if (this.sortAttribute === attribute) {
+        this.sortOrder = this.sortOrder * -1;
+      } else {
+        this.sortOrder = 1;
+        this.sortAttribute = attribute;
+      }
     }
   }
 };
