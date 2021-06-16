@@ -8,6 +8,7 @@ import RecipesIndex from "../views/recipes/Index.vue";
 import RecipesNew from "../views/recipes/New.vue";
 import RecipesShow from "../views/recipes/Show.vue";
 import RecipesEdit from "../views/recipes/Edit.vue";
+import Mapbox from "../views/Map.vue";
 
 Vue.use(VueRouter);
 
@@ -51,6 +52,11 @@ const routes = [
     path: "/recipes/:id/edit",
     name: "recipes-edit",
     component: RecipesEdit
+  },
+  {
+    path: "/map",
+    name: "map",
+    component: Mapbox
   }
 ];
 

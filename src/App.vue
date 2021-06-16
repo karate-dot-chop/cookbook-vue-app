@@ -2,6 +2,7 @@
   <div id="app">
     <div id="nav">
       <router-link to="/">Home</router-link> |
+      <router-link to="/map">Map</router-link> |
       <router-link to="/recipes">Recipes</router-link> |
       <router-link to="/recipes/new">New Recipe</router-link> |
       <span v-if="isLoggedIn()">
