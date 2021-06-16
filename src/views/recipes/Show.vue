@@ -6,7 +6,7 @@
     <p>{{ recipe.directions }}</p>
     <p>
       Added by: {{ recipe.user.name }} on
-      {{ recipe.friendly_created_at }}
+      {{ recipe.created_at }}
     </p>
     <p>
       Current logged in user: {{ typeof $parent.getUserId() }}

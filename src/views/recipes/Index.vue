@@ -1,6 +1,16 @@
 <template>
   <div class="recipes-index">
-    <input type="text" v-model="searchTerm" placeholder="Search" />
+    <input
+      type="text"
+      v-model="searchTerm"
+      list="titles"
+      placeholder="Search"
+    />
+    <datalist id="titles">
+      <option v-for="recipe in recipes" v-bind:key="recipe.id">
+        {{ recipe.title }}
+      </option>
+    </datalist>
     <div
       v-for="recipe in filterBy(recipes, searchTerm, 'title')"
       v-bind:key="recipe.id"
