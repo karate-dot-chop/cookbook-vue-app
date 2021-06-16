@@ -1,18 +1,24 @@
 <template>
   <div class="recipes-index">
+    <datalist id="titles">
+      <option v-for="recipe in recipes" v-bind:key="recipe.id">
+        {{ recipe.title }}
+      </option>
+    </datalist>
     <input
       type="text"
       v-model="searchTerm"
       list="titles"
       placeholder="Search"
     />
-    <datalist id="titles">
-      <option v-for="recipe in recipes" v-bind:key="recipe.id">
-        {{ recipe.title }}
-      </option>
-    </datalist>
+    <br /><br />
+    <button v-on:click="setSortAttribute('title')">Sort by title</button>
+    <button v-on:click="setSortAttribute('prep_time')">
+      Sort by prep time
+    </button>
+
     <div
-      v-for="recipe in filterBy(recipes, searchTerm, 'title')"
+      v-for="recipe in filterBy(orderBy(recipes, sortAttribute), searchTerm)"
       v-bind:key="recipe.id"
     >
       <h2>{{ recipe.title }}</h2>
@@ -37,7 +43,8 @@ export default {
   data: function () {
     return {
       recipes: [],
-      searchTerm: ""
+      searchTerm: "",
+      sortAttribute: "title"
     };
   },
   created: function () {
@@ -49,6 +56,9 @@ export default {
   methods: {
     relativeDate: function (date) {
       return moment(date).fromNow();
+    },
+    setSortAttribute: function (attribute) {
+      this.sortAttribute = attribute;
     }
   }
 };
