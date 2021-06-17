@@ -13,42 +13,71 @@
 </style>
 
 <script>
-/* global mapboxgl */
+/* global mapboxgl, mapboxSdk */
 export default {
   data: function () {
-    return {};
+    return {
+      places: [
+        { lat: -25.363, lng: 131.044, description: "A place in Australia" },
+        { lat: -33.8675, lng: 151.207, description: "The main city!" },
+        { lat: -37.8136, lng: 144.9631, description: "This is Melbourne!" },
+        {
+          lat: 37.773972,
+          lng: -122.431297,
+          description: "This is David's house"
+        }
+      ]
+    };
   },
   mounted: function () {
     mapboxgl.accessToken = process.env.VUE_APP_MAPBOX_ACCESS_TOKEN;
+
     var map = new mapboxgl.Map({
       container: "map", // container id
       style: "mapbox://styles/mapbox/streets-v11", // style URL
-      center: [-87.62, 41.88], // starting position [lng, lat]
-      zoom: 10 // starting zoom
+      center: [131.044, -25.363], // starting position [lng, lat]
+      zoom: 5 // starting zoom
     });
 
-    // create the popup
-    var popup = new mapboxgl.Popup({ offset: 30 }).setText(
-      "Chicago is the windy city with lots of pizza."
-    );
+    this.places.forEach((place) => {
+      var popup = new mapboxgl.Popup({ offset: 25 }).setText(place.description);
+      var marker = new mapboxgl.Marker()
+        .setLngLat([place.lng, place.lat])
+        .setPopup(popup)
+        .addTo(map);
+      console.log(marker);
+    });
 
-    // Create a default Marker and add it to the map.
-    var marker1 = new mapboxgl.Marker()
-      .setLngLat([-87.62, 41.88])
-      .setPopup(popup)
-      .addTo(map);
-    console.log(marker1);
+    // geocoding example
 
-    // Create a default Marker, colored black, rotated 45 degrees.
-    var marker2 = new mapboxgl.Marker({
-      color: "black",
-      rotation: 45,
-      isDraggable: true,
-      draggable: true
-    })
-      .setLngLat([-122.431297, 37.773972])
-      .addTo(map);
-    console.log(marker2);
+    // var mapboxClient = mapboxSdk({ accessToken: mapboxgl.accessToken });
+    // mapboxClient.geocoding
+    //   .forwardGeocode({
+    //     query: "Georgia",
+    //     autocomplete: false,
+    //     limit: 1
+    //   })
+    //   .send()
+    //   .then(function (response) {
+    //     if (
+    //       response &&
+    //       response.body &&
+    //       response.body.features &&
+    //       response.body.features.length
+    //     ) {
+    //       var feature = response.body.features[0];
+
+    //       var map = new mapboxgl.Map({
+    //         container: "map",
+    //         style: "mapbox://styles/mapbox/streets-v11",
+    //         center: feature.center,
+    //         zoom: 10
+    //       });
+
+    //       // Create a marker and add it to the map.
+    //       new mapboxgl.Marker().setLngLat(feature.center).addTo(map);
+    //     }
+    //   });
   },
   methods: {}
 };
