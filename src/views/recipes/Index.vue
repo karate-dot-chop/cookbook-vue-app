@@ -5,25 +5,68 @@
         {{ recipe.title }}
       </option>
     </datalist>
-    <input
-      type="text"
-      v-model="searchTerm"
-      list="titles"
-      placeholder="Search"
-    />
-    <br /><br />
-    <button v-on:click="setSortAttribute('title')">
+
+    <div class="row g-3 align-items-center">
+      <div class="col-auto">
+        <label for="inputPassword6" class="col-form-label">Search</label>
+      </div>
+      <div class="col-auto">
+        <input
+          type="text"
+          id="inputPassword6"
+          class="form-control"
+          aria-describedby="searchBox"
+          v-model="searchTerm"
+          list="titles"
+        />
+      </div>
+      <div class="col-auto">
+        <span id="searchBox" class="form-text">
+          Search for a recipe by it's title.
+        </span>
+      </div>
+    </div>
+    <br />
+    <button v-on:click="setSortAttribute('title')" class="btn btn-success">
       Sort by title
       <span v-if="sortAttribute === 'title' && sortOrder === 1">^</span>
       <span v-if="sortAttribute === 'title' && sortOrder === -1">v</span>
     </button>
-    <button v-on:click="setSortAttribute('prep_time')">
+    <button v-on:click="setSortAttribute('prep_time')" class="btn btn-success">
       Sort by prep time
       <span v-if="sortAttribute === 'prep_time' && sortOrder === 1">^</span>
       <span v-if="sortAttribute === 'prep_time' && sortOrder === -1">v</span>
     </button>
 
-    <div
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+      <div
+        class="col"
+        v-for="recipe in filterBy(
+          orderBy(recipes, sortAttribute, sortOrder),
+          searchTerm
+        )"
+        v-bind:key="recipe.id"
+      >
+        <div class="card">
+          <router-link :to="`/recipes/${recipe.id}`">
+            <img
+              :src="recipe.image_url"
+              class="card-img-top"
+              :alt="recipe.title"
+            />
+          </router-link>
+          <div class="card-body">
+            <h5 class="card-title">{{ recipe.title }}</h5>
+            <p class="card-text">Ingredients: {{ recipe.ingredients }}</p>
+            <p>Directions: {{ recipe.directions }}</p>
+            <p>Prep Time: {{ recipe.prep_time }}</p>
+            <p>Created {{ relativeDate(recipe.created_at) }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- <div
       is="transition-group"
       appear
       enter-active-class="animate__animated animate__bounceIn"
@@ -45,7 +88,7 @@
         <p>Prep Time: {{ recipe.prep_time }}</p>
         <p>Created {{ relativeDate(recipe.created_at) }}</p>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
