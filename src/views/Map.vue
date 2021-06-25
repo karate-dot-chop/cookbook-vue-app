@@ -13,7 +13,7 @@
 </style>
 
 <script>
-/* global mapboxgl, mapboxSdk */
+/* global mapboxgl */
 export default {
   data: function () {
     return {

@@ -1,94 +1,79 @@
 <template>
   <div class="recipes-index">
-    <datalist id="titles">
-      <option v-for="recipe in recipes" v-bind:key="recipe.id">
-        {{ recipe.title }}
-      </option>
-    </datalist>
-
-    <div class="row g-3 align-items-center">
-      <div class="col-auto">
-        <label for="inputPassword6" class="col-form-label">Search</label>
-      </div>
-      <div class="col-auto">
-        <input
-          type="text"
-          id="inputPassword6"
-          class="form-control"
-          aria-describedby="searchBox"
-          v-model="searchTerm"
-          list="titles"
-        />
-      </div>
-      <div class="col-auto">
-        <span id="searchBox" class="form-text">
-          Search for a recipe by it's title.
-        </span>
-      </div>
-    </div>
-    <br />
-    <button v-on:click="setSortAttribute('title')" class="btn btn-success">
-      Sort by title
-      <span v-if="sortAttribute === 'title' && sortOrder === 1">^</span>
-      <span v-if="sortAttribute === 'title' && sortOrder === -1">v</span>
-    </button>
-    <button v-on:click="setSortAttribute('prep_time')" class="btn btn-success">
-      Sort by prep time
-      <span v-if="sortAttribute === 'prep_time' && sortOrder === 1">^</span>
-      <span v-if="sortAttribute === 'prep_time' && sortOrder === -1">v</span>
-    </button>
-
-    <div class="row row-cols-1 row-cols-md-3 g-4">
-      <div
-        class="col"
-        v-for="recipe in filterBy(
-          orderBy(recipes, sortAttribute, sortOrder),
-          searchTerm
-        )"
-        v-bind:key="recipe.id"
-      >
-        <div class="card">
-          <router-link :to="`/recipes/${recipe.id}`">
-            <img
-              :src="recipe.image_url"
-              class="card-img-top"
-              :alt="recipe.title"
+    <div id="fh5co-work-section" class="fh5co-light-grey-section">
+      <div class="container">
+        <div class="row g-3 align-items-center">
+          <div class="col-auto">
+            <label for="inputPassword6" class="col-form-label">Search</label>
+          </div>
+          <div class="col-auto">
+            <input
+              type="text"
+              id="inputPassword6"
+              class="form-control"
+              aria-describedby="searchBox"
+              v-model="searchTerm"
+              list="titles"
             />
-          </router-link>
-          <div class="card-body">
-            <h5 class="card-title">{{ recipe.title }}</h5>
-            <p class="card-text">Ingredients: {{ recipe.ingredients }}</p>
-            <p>Directions: {{ recipe.directions }}</p>
-            <p>Prep Time: {{ recipe.prep_time }}</p>
-            <p>Created {{ relativeDate(recipe.created_at) }}</p>
+          </div>
+          <div class="col-auto">
+            <span id="searchBox" class="form-text">
+              Search for a recipe by it's title.
+            </span>
+          </div>
+        </div>
+        <br />
+        <button v-on:click="setSortAttribute('title')" class="btn btn-success">
+          Sort by title
+          <span v-if="sortAttribute === 'title' && sortOrder === 1">^</span>
+          <span v-if="sortAttribute === 'title' && sortOrder === -1">v</span>
+        </button>
+        <button
+          v-on:click="setSortAttribute('prep_time')"
+          class="btn btn-success"
+        >
+          Sort by prep time
+          <span v-if="sortAttribute === 'prep_time' && sortOrder === 1">^</span>
+          <span v-if="sortAttribute === 'prep_time' && sortOrder === -1"
+            >v</span
+          >
+        </button>
+        <div class="row">
+          <div
+            class="col-md-4"
+            v-for="recipe in filterBy(
+              orderBy(recipes, sortAttribute, sortOrder),
+              searchTerm
+            )"
+            v-bind:key="recipe.id"
+          >
+            <router-link
+              :to="`/recipes/${recipe.id}`"
+              class="item-grid text-center"
+            >
+              <div
+                class="image"
+                :style="`background-image: url(${recipe.image_url})`"
+              ></div>
+              <div class="v-align">
+                <div class="v-align-middle">
+                  <h3 class="title">{{ recipe.title }}</h3>
+                  <h5 class="category">
+                    Created {{ relativeDate(recipe.created_at) }}
+                  </h5>
+                </div>
+              </div>
+            </router-link>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- <div
-      is="transition-group"
-      appear
-      enter-active-class="animate__animated animate__bounceIn"
-      leave-active-class="animate__animated animate__bounceOut"
-    >
-      <div
-        v-for="recipe in filterBy(
-          orderBy(recipes, sortAttribute, sortOrder),
-          searchTerm
-        )"
-        v-bind:key="recipe.id"
-      >
-        <h2>{{ recipe.title }}</h2>
-        <router-link :to="`/recipes/${recipe.id}`">
-          <img :src="recipe.image_url" alt=""
-        /></router-link>
-        <p>Ingredients: {{ recipe.ingredients }}</p>
-        <p>Directions: {{ recipe.directions }}</p>
-        <p>Prep Time: {{ recipe.prep_time }}</p>
-        <p>Created {{ relativeDate(recipe.created_at) }}</p>
-      </div>
-    </div> -->
+    <datalist id="titles">
+      <option v-for="recipe in recipes" v-bind:key="recipe.id">
+        {{ recipe.title }}
+      </option>
+    </datalist>
   </div>
 </template>
 
