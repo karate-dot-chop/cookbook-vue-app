@@ -9,6 +9,7 @@ import RecipesNew from "../views/recipes/New.vue";
 import RecipesShow from "../views/recipes/Show.vue";
 import RecipesEdit from "../views/recipes/Edit.vue";
 import Mapbox from "../views/Map.vue";
+import MessagesIndex from "../views/MessagesIndex.vue";
 
 Vue.use(VueRouter);
 
@@ -57,6 +58,11 @@ const routes = [
     path: "/map",
     name: "map",
     component: Mapbox
+  },
+  {
+    path: "/messages",
+    name: "messages-index",
+    component: MessagesIndex
   }
 ];
 
